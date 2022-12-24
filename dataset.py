@@ -24,7 +24,7 @@ class MyDataset(Dataset):
 
         path = self.voice[idx]
         target = self.labels[idx]
-        voice = sf.read(path)
+        voice = sf.read(path)[0]
 
         if self.transform:
             voice = self.transform(voice)
