@@ -2,6 +2,7 @@ import torch
 from dataset import MyDataset
 from sklearn.model_selection import KFold
 from torch.utils.data import DataLoader
+import soundfile as sf
 from torch import nn
 import os
 import numpy as np
@@ -51,7 +52,17 @@ def train(train_dataset,test_dataset, batch_size, workers, model):
 
 
 def test(root, model):
-    for
+    for video in os.listdir(root):
+        voice = sf.read(video)
+        ########增加一个处理数据的函数
+
+        output = model(voice)
+        max = torch.max(output)
+        output = torch.where(output == max,1,0)
+        idx = torch.argmax(output)
+        s = '%03d' % (idx.item() + 1)
+        print(video+" spk" + s)
+
 
 def get_class(labels):
     labels = labels[-3:]
@@ -89,5 +100,3 @@ def main(root):
 if __name__ == "__main__":
     root = "/Users/wangrui/Downloads/LibriSpeech-SI/train"
     main(root)
-
-
